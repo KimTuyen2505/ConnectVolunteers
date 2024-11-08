@@ -3,7 +3,7 @@ import { useState } from "react";
 import Slider from "../components/Slider";
 
 
-export default function Home() {
+export default function Projects() {
   const [projects, setProjects] = useState(
     [
     {
@@ -66,10 +66,17 @@ export default function Home() {
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <Slider>
-        
-      </Slider>
+      <div className="border-b border-gray-200">
+        <nav className="flex justify-center items-center gap-16">
+          <button className="px-1 py-4 text-blue-400 font-medium border-b-2 border-blue-400 -mb-px">
+            Dự án đang gây quỹ
+          </button>
 
+          <button className="px-1 py-4 text-gray-500 font-medium hover:text-gray-700">
+            Dự án đã kết thúc
+          </button>
+        </nav>
+      </div>
       {/* Projects Section */}
       <div className="container mx-auto px-4 py-16">
       <h1 style={{ 
@@ -78,14 +85,11 @@ export default function Home() {
         fontSize: '68px', 
         marginBottom: '40px',
       }}>
-        Dự Án Gây Quỹ
+        Dự án đang gây quỹ
       </h1>
-  <p className="text-yellow-600 text-center mb-8 text-2xl font-bold relative group">
-    <span className="inline-flex items-center transition duration-300 transform group-hover:scale-105">
-    🏆 Bảng Vàng:  Nguyễn Thị Thu
-    </span>
-  </p>
-
+        <p className="text-gray-600 text-center mb-8">
+          Hãy lựa chọn một dự án và ủng hộ ngay hôm nay
+        </p>
 
         {/* Categories */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
@@ -107,7 +111,7 @@ export default function Home() {
             <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg">
               <div className="relative">
                 <img
-                  src="/Volunteer1.jpg"
+                  src="/Volunteer6.jpg"
                   alt={project.title}
                   className="w-full h-48 object-cover"
                 />
