@@ -3,6 +3,8 @@ import Button from "../components/Button";
 import { Link } from "react-router-dom";
 
 export default function Header() {
+  const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
+
   return (
     <header className="border-b">
       <div className="container mx-auto px-4">
@@ -33,18 +35,27 @@ export default function Header() {
           {/* Right Side Actions */}
           <div className="flex items-center space-x-4">
             <Button className=" bg-blue-500  hover:bg-blue-600">
-              Ủng hộ ngay 
+              Ủng hộ ngay
             </Button>
             <button className="p-2 hover:bg-gray-100 rounded-full">
               <Search className="h-5 w-5 text-gray-600" />
             </button>
-            <Link to="/register" className="text-gray-700 hover:text-gray-900">
-              Đăng ký
-            </Link>
-            <span>/</span>
-            <Link to="/login" className="text-gray-700 hover:text-gray-900">
-              Đăng nhập
-            </Link>
+            {currentUser ? (
+              <div>{currentUser.fullName}</div>
+            ) : (
+              <>
+                <Link
+                  to="/register"
+                  className="text-gray-700 hover:text-gray-900"
+                >
+                  Đăng ký
+                </Link>
+                <span>/</span>
+                <Link to="/login" className="text-gray-700 hover:text-gray-900">
+                  Đăng nhập
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       </div>

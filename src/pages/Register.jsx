@@ -2,14 +2,19 @@ import { Calendar, Heart, Lock, Mail, User } from "lucide-react";
 import { useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { addUser, getUsers } from "../services/user";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
+    username: "",
     password: "",
-    birthdate: "",
+    email: "",
+    fullName: "",
+    confirmPassword: "",
+    birthDay: "",
   });
 
   const handleChange = (e) => {
@@ -22,9 +27,19 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log("Form submitted:", formData);
-    // Add your registration logic here
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Mật khẩu không khớp");
+      return;
+    } else if (formData.password.length < 6) {
+      alert("Mật khẩu phải có ít nhất 6 ký tự");
+      return;
+    } else {
+      addUser(formData).then(() => {
+        alert("Đăng ký thành công");
+        navigate("/login");
+      });
+    }
   };
 
   return (
@@ -52,6 +67,25 @@ const Register = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Tên tài khoản
+              </label>
+              <div className="mt-1">
+                <Input
+                  id="username"
+                  name="username"
+                  type="text"
+                  required
+                  value={formData.username}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
                 htmlFor="fullName"
                 className="block text-sm font-medium text-gray-700"
               >
@@ -63,7 +97,6 @@ const Register = () => {
                   name="fullName"
                   type="text"
                   required
-                  icon={<User className="h-5 w-5" />}
                   value={formData.fullName}
                   onChange={handleChange}
                 />
@@ -83,7 +116,6 @@ const Register = () => {
                   name="email"
                   type="email"
                   required
-                  icon={<Mail className="h-5 w-5" />}
                   value={formData.email}
                   onChange={handleChange}
                 />
@@ -103,7 +135,6 @@ const Register = () => {
                   name="password"
                   type="password"
                   required
-                  icon={<Lock className="h-5 w-5" />}
                   value={formData.password}
                   onChange={handleChange}
                 />
@@ -112,19 +143,37 @@ const Register = () => {
 
             <div>
               <label
-                htmlFor="birthdate"
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Nhập lại mật khẩu
+              </label>
+              <div className="mt-1">
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  required
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="birthDay"
                 className="block text-sm font-medium text-gray-700"
               >
                 Ngày sinh
               </label>
               <div className="mt-1">
                 <Input
-                  id="birthdate"
-                  name="birthdate"
+                  id="birthDay"
+                  name="birthDay"
                   type="date"
                   required
-                  icon={<Calendar className="h-5 w-5" />}
-                  value={formData.birthdate}
+                  value={formData.birthDay}
                   onChange={handleChange}
                 />
               </div>
@@ -147,44 +196,21 @@ const Register = () => {
               </div>
             </div>
 
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <div>
-                <a
-                  href="#"
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+            <div className="mt-6">
+              <a
+                href="#"
+                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              >
+                <span className="sr-only">Đăng ký bằng Google</span>
+                <svg
+                  className="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
                 >
-                  <span className="sr-only">Đăng ký bằng Facebook</span>
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M20 10c0-5.523-4.477-10-10-10S0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </a>
-              </div>
-
-              <div>
-                <a
-                  href="#"
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-                >
-                  <span className="sr-only">Đăng ký bằng Google</span>
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    aria-hidden="true"
-                  >
-                    <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
-                  </svg>
-                </a>
-              </div>
+                  <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
+                </svg>
+              </a>
             </div>
           </div>
         </div>

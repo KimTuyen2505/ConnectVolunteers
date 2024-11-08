@@ -10,8 +10,6 @@ const volunteerItems = [
   {
     letter: 'Giá Trị Cốt Lõi',
     title: 'Tình Nguyện - Đoàn Kết - Phát Triển Bền Vững',
-    description: 'Tình Nguyện: Chúng tôi khuyến khích mọi người tham gia vào các hoạt động tình nguyện để phát triển bản thân và hỗ trợ cộng đồng.',
-    description: 'Đoàn Kết: Chúng tôi tin tưởng vào sức mạnh của sự đoàn kết, kết nối mọi người lại với nhau để cùng nhau thực hiện những dự án ý nghĩa.',
     description: 'Phát Triển Bền Vững: Chúng tôi hướng tới việc phát triển các giải pháp bền vững cho các vấn đề xã hội và môi trường.',
     image: '/test.jpg',
   },
