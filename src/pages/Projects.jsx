@@ -7,7 +7,16 @@ export default function Projects() {
   const [projects, setProjects] = useState(
     [
     {
-      title: "Trái Tim Bé Nhỏ Của Như Ý Đang Cần Cứu",
+      title: "Trái Tim Bé Nhỏ Của Kim Tuyến Đang Cần Cứu",
+      org: "Quỹ Từ thiện Nắng bước tuổi thơ",
+      raised: "7.033.300đ",
+      target: "15.000.000đ",
+      progress: 46.9,
+      category: "Trẻ em",
+      
+    },
+    {
+      title: "Trái Tim Bé Nhỏ Của Thị Thu Đang Cần Cứu",
       org: "Quỹ Từ thiện Nắng bước tuổi thơ",
       raised: "7.033.300đ",
       target: "15.000.000đ",
@@ -15,7 +24,7 @@ export default function Projects() {
       category: "Trẻ em",
     },
     {
-      title: "Trái Tim Bé Nhỏ Của Như Ý Đang Cần Cứu",
+      title: "Trái Tim Bé Nhỏ Của Kim Tuyến Đang Cần Cứu",
       org: "Quỹ Từ thiện Nắng bước tuổi thơ",
       raised: "7.033.300đ",
       target: "15.000.000đ",
@@ -23,7 +32,7 @@ export default function Projects() {
       category: "Trẻ em",
     },
     {
-      title: "Trái Tim Bé Nhỏ Của Như Ý Đang Cần Cứu",
+      title: "Trái Tim Bé Nhỏ Của Thị Thu Đang Cần Cứu",
       org: "Quỹ Từ thiện Nắng bước tuổi thơ",
       raised: "7.033.300đ",
       target: "15.000.000đ",
@@ -31,7 +40,7 @@ export default function Projects() {
       category: "Trẻ em",
     },
     {
-      title: "Trái Tim Bé Nhỏ Của Như Ý Đang Cần Cứu",
+      title: "Trái Tim Bé Nhỏ Của Kim Tuyến Đang Cần Cứu",
       org: "Quỹ Từ thiện Nắng bước tuổi thơ",
       raised: "7.033.300đ",
       target: "15.000.000đ",
@@ -39,7 +48,7 @@ export default function Projects() {
       category: "Trẻ em",
     },
     {
-      title: "Trái Tim Bé Nhỏ Của Như Ý Đang Cần Cứu",
+      title: "Trái Tim Bé Nhỏ Của Thị Thu Đang Cần Cứu",
       org: "Quỹ Từ thiện Nắng bước tuổi thơ",
       raised: "7.033.300đ",
       target: "15.000.000đ",
@@ -47,15 +56,7 @@ export default function Projects() {
       category: "Trẻ em",
     },
     {
-      title: "Trái Tim Bé Nhỏ Của Như Ý Đang Cần Cứu",
-      org: "Quỹ Từ thiện Nắng bước tuổi thơ",
-      raised: "7.033.300đ",
-      target: "15.000.000đ",
-      progress: 46.9,
-      category: "Trẻ em",
-    },
-    {
-      title: "Trái Tim Bé Nhỏ Của Như Ý Đang Cần Cứu",
+      title: "Trái Tim Bé Nhỏ Của Thị Thu Đang Cần Cứu",
       org: "Quỹ Từ thiện Nắng bước tuổi thơ",
       raised: "7.033.300đ",
       target: "15.000.000đ",
@@ -93,6 +94,7 @@ export default function Projects() {
 
         {/* Categories */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
+     
           {["Trẻ em", "Giáo dục",  "Môi trường","Thiên tai"].map(
             (category) => (
               <button

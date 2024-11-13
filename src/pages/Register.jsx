@@ -17,6 +17,8 @@ const Register = () => {
     birthDay: "",
   });
 
+  const [emailExists, setEmailExists] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -25,9 +27,32 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const validateEmail = async (email) => {
+    const users = await getUsers();
+    return users.some(user => user.email === email);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const today = new Date();
+    const birthDate = new Date(formData.birthDay);
+    if (birthDate > today) {
+      alert("Ngày sinh không hợp lệ! Vui lòng kiểm tra lại ");
+      return;
+    }
+
+    // Check if the email already exists
+    const emailInUse = await validateEmail(formData.email);
+    if (emailInUse) {
+      setEmailExists(true);
+      alert("Email đã tồn tại! Vui lòng sử dụng email khác.");
+      return;
+    } else {
+      setEmailExists(false);
+    }
+
+    // Validate passwords
     if (formData.password !== formData.confirmPassword) {
       alert("Mật khẩu không khớp");
       return;
@@ -57,7 +82,7 @@ const Register = () => {
             to={"/login"}
             className="font-medium text-blue-600 hover:text-blue-500"
           >
-            đăng nhập nếu bạn đã có tài khoản
+          Đăng nhập nếu bạn đã có tài khoản
           </Link>
         </p>
       </div>
@@ -119,6 +144,11 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                 />
+                {emailExists && (
+                  <p className="mt-2 text-sm text-red-600">
+                    Email đã tồn tại.
+                  </p>
+                )}
               </div>
             </div>
 
