@@ -1,8 +1,10 @@
 import { Search } from "lucide-react";
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import UserMenu from "./UserMenu";
 
 export default function Header() {
+  const navigate = useNavigate();
   const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
 
   return (
@@ -33,14 +35,17 @@ export default function Header() {
 
           {/* Right Side Actions */}
           <div className="flex items-center space-x-4">
-            <Button className=" bg-blue-500  hover:bg-blue-600">
+            <Button
+              className=" bg-blue-500  hover:bg-blue-600"
+              onClick={() => navigate("/projects")}
+            >
               Ủng hộ ngay
             </Button>
             <button className="p-2 hover:bg-gray-100 rounded-full">
               <Search className="h-5 w-5 text-gray-600" />
             </button>
             {currentUser ? (
-              <div>{currentUser.fullName}</div>
+              <UserMenu currentUser={currentUser} />
             ) : (
               <>
                 <Link

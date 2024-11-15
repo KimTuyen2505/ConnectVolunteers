@@ -1,13 +1,26 @@
 import axios from "axios";
 
 const getUsers = async () => {
-  axios
+  return await axios
     .get(import.meta.env.VITE_API_SERVER + "/users", {})
     .then((response) => {
-      console.log(response.data.dataUsers);
+      return response.data.dataUsers;
     })
     .catch((error) => {
       console.error(error);
+      return [];
+    });
+};
+
+const getUser = async (userId) => {
+  return await axios
+    .get(import.meta.env.VITE_API_SERVER + `/user/${userId}`, {})
+    .then((response) => {
+      return response.data.dataUser;
+    })
+    .catch((error) => {
+      console.error(error);
+      return null;
     });
 };
 
@@ -22,18 +35,36 @@ const addUser = async (user) => {
     });
 };
 
-const checkExistUser = async (username) => {
+const checkExistUser = async (userId) => {
   try {
     const response = await axios.get(
-      import.meta.env.VITE_API_SERVER + `/user/${username}`,
+      import.meta.env.VITE_API_SERVER + `/user/${userId}`,
       {}
     );
     return response.data;
   } catch (error) {
+    console.error(error);
     return {
       success: false,
       message: "Tài khoản không tồn tại",
     };
   }
 };
-export { getUsers, addUser, checkExistUser };
+
+const updateUser = async (user) => {
+  return await axios
+    .put(import.meta.env.VITE_API_SERVER + `/user/${user.username}`, user)
+    .then((response) => {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+      return {
+        success: false,
+        message: "Cập nhật thông tin không thành công",
+      };
+    });
+};
+
+export { getUsers, getUser, addUser, checkExistUser, updateUser };

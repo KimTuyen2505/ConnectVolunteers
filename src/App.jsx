@@ -6,7 +6,9 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Projects from "./pages/Projects";
 import About from "./pages/About";
-import Ranking from "./pages/Ranking";  
+import Ranking from "./pages/Ranking";
+import DetailProject from "./pages/DetailProject";
+import PaymentResult from "./pages/PaymentResult";
 
 function App() {
   return (
@@ -16,11 +18,15 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:userId" element={<Profile />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/:projectId" element={<DetailProject />} />
         <Route path="/about" element={<About />} />
         <Route path="/ranking" element={<Ranking />} />
-      
+        <Route
+          path="/payment-result"
+          element={<PaymentResult success={false} />}
+        />
       </Routes>
     </>
   );
