@@ -12,6 +12,7 @@ export default function Home() {
   const [tags, setTags] = useState([]);
   const [projects, setProjects] = useState([]);
   const [currentTag, setCurrentTag] = useState(null);
+  const [top1User, setTop1User] = useState(null);
 
   useEffect(() => {
     getTags().then((response) => {
@@ -46,6 +47,45 @@ export default function Home() {
         );
       });
     });
+    let userData = [];
+    getUsers().then(async (responseUsers) => {
+      getProjects().then(async (responseProjects) => {
+        await Promise.all(
+          responseUsers.map(async (user) => {
+            let amountTotal = 0;
+            await Promise.all(
+              responseProjects.map(async (project) => {
+                await Promise.all(
+                  project.supporters.map(async (supporter) => {
+                    if (supporter.userId === user.username) {
+                      amountTotal += supporter.amount;
+                    }
+                  })
+                );
+              })
+            );
+            userData.push({
+              fullName: user.fullName,
+              amountTotal: amountTotal,
+              avatar: user.avatar,
+            });
+          })
+        );
+        let rank = 0;
+        let prevAmount = -1;
+        setTop1User(
+          userData
+            .sort((a, b) => b.amountTotal - a.amountTotal)
+            .map((user, index) => {
+              if (user.amountTotal != prevAmount) {
+                rank = index + 1;
+                prevAmount = user.amountTotal;
+              }
+              return { ...user, rank };
+            })[0]
+        );
+      });
+    });
   }, []);
 
   return (
@@ -67,7 +107,7 @@ export default function Home() {
         </h1>
         <p className="text-yellow-600 text-center mb-8 text-2xl font-bold relative group">
           <span className="inline-flex items-center transition duration-300 transform group-hover:scale-105">
-            🏆 Bảng Vàng: Nguyễn Thị Thu
+            🏆 Ngôi Sao Thiện Nguyện: {top1User?.fullName}
           </span>
         </p>
 

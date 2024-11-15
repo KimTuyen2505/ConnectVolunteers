@@ -125,16 +125,16 @@ const DetailProject = () => {
 
           <div className="organization">
             <img
-              src={project?.author.avatar}
+              src={project?.author?.avatar}
               alt="Organization logo"
               className="org-logo"
             />
             <div>
               <Link
-                to={`/profile/${project?.author.username}`}
+                to={`/profile/${project?.author?.username}`}
                 className="org-name"
               >
-                {project?.author.fullName}
+                {project?.author?.fullName}
               </Link>
               <div className="supporters">
                 <span className="icon">

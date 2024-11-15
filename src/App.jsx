@@ -9,6 +9,8 @@ import About from "./pages/About";
 import Ranking from "./pages/Ranking";
 import DetailProject from "./pages/DetailProject";
 import PaymentResult from "./pages/PaymentResult";
+import NotFound from "./pages/NotFound";
+import AdminDashboard from "./pages/Administrator";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           path="/payment-result"
           element={<PaymentResult success={false} />}
         />
+        <Route path="/administrator" element={<AdminDashboard />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

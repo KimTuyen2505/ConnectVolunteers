@@ -9,7 +9,6 @@ import Verification from "./Verification";
 import { addVerify } from "../services/verify";
 
 const Register = () => {
-  const navigate = useNavigate();
   const [isVerified, setIsVerified] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -18,7 +17,7 @@ const Register = () => {
     email: "",
     fullName: "",
     confirmPassword: "",
-    birthDay: "",
+    birthDate: "",
   });
 
   const [notification, setNotification] = useState(null);
@@ -45,12 +44,15 @@ const Register = () => {
     }
 
     const today = new Date();
-    const birthDate = new Date(formData.birthDay);
+    const birthDate = new Date(formData.birthDate);
     if (birthDate > today) {
       showNotification(
         "Ngày sinh không hợp lệ! Vui lòng kiểm tra lại",
         "error"
       );
+      return;
+    } else if (today.getFullYear() - birthDate.getFullYear() < 18) {
+      showNotification("Bạn chưa đủ 18 tuổi để đăng ký tài khoản", "error");
       return;
     }
 
@@ -213,18 +215,18 @@ const Register = () => {
 
                 <div>
                   <label
-                    htmlFor="birthDay"
+                    htmlFor="birthDate"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Ngày sinh
                   </label>
                   <div className="mt-1">
                     <Input
-                      id="birthDay"
-                      name="birthDay"
+                      id="birthDate"
+                      name="birthDate"
                       type="date"
                       required
-                      value={formData.birthDay}
+                      value={formData.birthDate}
                       onChange={handleChange}
                     />
                   </div>

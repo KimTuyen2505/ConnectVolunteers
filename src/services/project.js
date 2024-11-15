@@ -25,13 +25,18 @@ const getProject = async (projectId) => {
 };
 
 const addProject = async (project) => {
-  axios
+  return await axios
     .post(import.meta.env.VITE_API_SERVER + "/project", project)
     .then((response) => {
       console.log(response.data);
+      return response.data;
     })
     .catch((error) => {
       console.error(error);
+      return {
+        success: false,
+        message: "Tạo dự án không thành công",
+      };
     });
 };
 
@@ -51,4 +56,20 @@ const updateProject = async (project) => {
     });
 };
 
-export { getProjects, getProject, addProject, updateProject };
+const deleteProject = async (projectId) => {
+  return await axios
+    .delete(import.meta.env.VITE_API_SERVER + `/project/${projectId}`)
+    .then((response) => {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+      return {
+        success: false,
+        message: "Xóa dự án không thành công",
+      };
+    });
+};
+
+export { getProjects, getProject, addProject, updateProject, deleteProject };

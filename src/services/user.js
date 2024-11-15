@@ -25,10 +25,10 @@ const getUser = async (userId) => {
 };
 
 const addUser = async (user) => {
-  axios
+  return await axios
     .post(import.meta.env.VITE_API_SERVER + "/user", user)
     .then((response) => {
-      console.log(response.data);
+      return response.data;
     })
     .catch((error) => {
       console.error(error);
@@ -67,4 +67,20 @@ const updateUser = async (user) => {
     });
 };
 
-export { getUsers, getUser, addUser, checkExistUser, updateUser };
+const deleteUser = async (username) => {
+  return await axios
+    .delete(import.meta.env.VITE_API_SERVER + `/user/${username}`, {})
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+      return {
+        success: false,
+        message: "Xóa người dùng không thành công",
+      };
+    });
+};
+
+export { getUsers, getUser, addUser, checkExistUser, updateUser, deleteUser };
