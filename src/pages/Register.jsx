@@ -123,7 +123,7 @@ const Register = () => {
                     htmlFor="username"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Tên tài khoản
+                    Tên tài khoản (<span className="text-red-500">*</span>)
                   </label>
                   <div className="mt-1">
                     <Input
@@ -142,7 +142,7 @@ const Register = () => {
                     htmlFor="fullName"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Họ và tên
+                    Họ và tên (<span className="text-red-500">*</span>)
                   </label>
                   <div className="mt-1">
                     <Input
@@ -161,7 +161,7 @@ const Register = () => {
                     htmlFor="email"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Địa chỉ email
+                    Địa chỉ email (<span className="text-red-500">*</span>)
                   </label>
                   <div className="mt-1">
                     <Input
@@ -180,7 +180,7 @@ const Register = () => {
                     htmlFor="password"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Mật khẩu
+                    Mật khẩu (<span className="text-red-500">*</span>)
                   </label>
                   <div className="mt-1">
                     <Input
@@ -199,7 +199,7 @@ const Register = () => {
                     htmlFor="confirmPassword"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Nhập lại mật khẩu
+                    Nhập lại mật khẩu (<span className="text-red-500">*</span>)
                   </label>
                   <div className="mt-1">
                     <Input
@@ -218,7 +218,7 @@ const Register = () => {
                     htmlFor="birthDate"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Ngày sinh
+                    Ngày sinh (<span className="text-red-500">*</span>)
                   </label>
                   <div className="mt-1">
                     <Input

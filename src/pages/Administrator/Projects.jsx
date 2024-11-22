@@ -20,7 +20,10 @@ export default function ProjectManagement() {
     target: 0,
     description: "",
     tagId: "",
+    startAt: "",
+    endAt: "",
   });
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     fetchProjects();
@@ -50,20 +53,63 @@ export default function ProjectManagement() {
   const handleAddProject = async (e) => {
     e.preventDefault();
     try {
-      addProject(newProject).then((response) => {
-        if (response.success) {
-          setNewProject({
-            title: "",
-            author: currentUser?.username || "",
-            images: [],
-            supporters: [],
-            target: 0,
-            description: "",
-            tagId: "",
-          });
-          fetchProjects();
-        }
-      });
+      setDisable(true);
+      console.log(selectedFile);
+      if (selectedFile && selectedFile.length > 0) {
+        const images = [];
+        await Promise.all(
+          selectedFile.map(async (file) => {
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+              try {
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append(
+                  "upload_preset",
+                  import.meta.env.VITE_UPLOAD_PRESET
+                );
+                formData.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
+
+                const response = await axios.post(
+                  `https://api.cloudinary.com/v1_1/${
+                    import.meta.env.VITE_CLOUD_NAME
+                  }/image/upload`,
+                  formData
+                );
+
+                const imageUrl = response.data.secure_url;
+
+                images.push(imageUrl);
+                console.log("current: ", images);
+                if (images.length === selectedFile.length) {
+                  addProject({ ...newProject, images: images }).then(
+                    (response) => {
+                      if (response.success) {
+                        setNewProject({
+                          title: "",
+                          author: currentUser?.username || "",
+                          images: [],
+                          supporters: [],
+                          target: 0,
+                          description: "",
+                          tagId: "",
+                          startAt: "",
+                          endAt: "",
+                        });
+                        setDisable(false);
+                        fetchProjects();
+                      }
+                    }
+                  );
+                }
+              } catch (error) {
+                console.error(error);
+              }
+            };
+            reader.readAsDataURL(file);
+          })
+        );
+      }
     } catch (error) {
       console.error("Error adding project:", error);
     }
@@ -83,46 +129,8 @@ export default function ProjectManagement() {
 
   const handleImageChange = async (e) => {
     const files = e.target.files;
+    setSelectedFile([...e.target.files]);
     console.log(files);
-    setDisable(true);
-    if (files.length > 0) {
-      const images = [];
-      for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-          try {
-            const formData = new FormData();
-            formData.append("file", files[i]);
-            formData.append(
-              "upload_preset",
-              import.meta.env.VITE_UPLOAD_PRESET
-            );
-            formData.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
-
-            const response = await axios.post(
-              `https://api.cloudinary.com/v1_1/${
-                import.meta.env.VITE_CLOUD_NAME
-              }/image/upload`,
-              formData
-            );
-
-            const imageUrl = response.data.secure_url;
-
-            images.push(imageUrl);
-          } catch (error) {
-            console.error(error);
-          }
-        };
-        reader.readAsDataURL(files[i]);
-        if (i === files.length - 1) {
-          setTimeout(() => {
-            console.log(images);
-            setDisable(false);
-            setNewProject({ ...newProject, images: images });
-          }, files.length * 5000);
-        }
-      }
-    }
   };
 
   return (
@@ -139,58 +147,114 @@ export default function ProjectManagement() {
       >
         <h3 className="text-lg font-semibold mb-4">Thêm dự án mới</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            type="text"
-            placeholder="Tiêu đề dự án"
-            value={newProject.title}
-            onChange={(e) =>
-              setNewProject({ ...newProject, title: e.target.value })
-            }
-            className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
-            required
-          />
-          <input
-            type="number"
-            placeholder="Mục tiêu dự án"
-            value={newProject.target}
-            onChange={(e) =>
-              setNewProject({ ...newProject, target: Number(e.target.value) })
-            }
-            className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
-            required
-          />
-          <textarea
-            placeholder="Mô tả dự án"
-            value={newProject.description}
-            onChange={(e) =>
-              setNewProject({ ...newProject, description: e.target.value })
-            }
-            className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500 col-span-2"
-            required
-            rows="4"
-          />
-          <select
-            value={newProject.tagId}
-            onChange={(e) =>
-              setNewProject({ ...newProject, tagId: e.target.value })
-            }
-            className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
-            required
-          >
-            <option value="">---Chọn thẻ---</option>
-            {tags.map((tag) => (
-              <option key={tag._id} value={tag._id}>
-                {tag.tagName}
-              </option>
-            ))}
-          </select>
-          <input
-            type="file"
-            multiple
-            onChange={handleImageChange}
-            className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
-            accept="image/*"
-          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Tiêu đề:
+            </label>
+            <input
+              type="text"
+              placeholder="Tiêu đề dự án"
+              value={newProject.title}
+              onChange={(e) =>
+                setNewProject({ ...newProject, title: e.target.value })
+              }
+              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Mục tiêu:
+            </label>
+            <input
+              type="number"
+              placeholder="Mục tiêu dự án"
+              value={newProject.target}
+              onChange={(e) =>
+                setNewProject({ ...newProject, target: Number(e.target.value) })
+              }
+              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+              required
+            />
+          </div>
+          <div className="col-span-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Mô tả:
+            </label>
+            <textarea
+              placeholder="Mô tả dự án"
+              value={newProject.description}
+              onChange={(e) =>
+                setNewProject({ ...newProject, description: e.target.value })
+              }
+              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+              required
+              rows="4"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Chọn thẻ:
+            </label>
+            <select
+              value={newProject.tagId}
+              onChange={(e) =>
+                setNewProject({ ...newProject, tagId: e.target.value })
+              }
+              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+              required
+            >
+              <option value="">---Chọn thẻ---</option>
+              {tags.map((tag) => (
+                <option key={tag._id} value={tag._id}>
+                  {tag.tagName}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Chọn các hình ảnh:
+            </label>
+            <input
+              type="file"
+              multiple
+              onChange={handleImageChange}
+              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+              accept="image/*"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Chọn ngày bắt đầu:
+            </label>
+            <input
+              type="date"
+              placeholder="Ngày bắt đầu"
+              value={newProject.startAt}
+              onChange={(e) =>
+                setNewProject({ ...newProject, startAt: e.target.value })
+              }
+              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Chọn ngày kết thúc:
+            </label>
+            <input
+              type="date"
+              placeholder="Ngày kết thúc"
+              value={newProject.endAt}
+              onChange={(e) =>
+                setNewProject({ ...newProject, endAt: e.target.value })
+              }
+              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+              required
+            />
+          </div>
         </div>
         <motion.button
           whileHover={{ scale: 1.02 }}
@@ -215,6 +279,12 @@ export default function ProjectManagement() {
                 Mục tiêu
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-sky-500 uppercase tracking-wider">
+                Ngày bắt đầu
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-sky-500 uppercase tracking-wider">
+                Ngày kết thúc
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-sky-500 uppercase tracking-wider">
                 Hành động
               </th>
             </tr>
@@ -224,6 +294,8 @@ export default function ProjectManagement() {
               <tr key={project._id}>
                 <td className="px-6 py-4 whitespace-nowrap">{project.title}</td>
                 <td className="px-6 py-4">{moneyString(project.target)}</td>
+                <td className="px-6 py-4">{project.startAt}</td>
+                <td className="px-6 py-4">{project.endAt}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <motion.button
                     whileHover={{ scale: 1.05 }}

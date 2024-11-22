@@ -6,6 +6,7 @@ import { getUsers } from "../services/user";
 import { moneyString } from "../utils/moneyString";
 import { User } from "lucide-react";
 import axios from "axios";
+import moment from "moment";
 
 const DetailProject = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
@@ -122,7 +123,16 @@ const DetailProject = () => {
         {/* Right Column - Donation Info */}
         <div className="donation-info">
           <h1>{project?.title}</h1>
-
+          <div className="text-gray-400 mb-4">
+            Bắt đầu từ{" "}
+            <span className="font-bold text-blue-400">
+              {moment(project?.startAt, "YYYY-MM-DD").format("DD-MM-YYYY")}
+            </span>{" "}
+            đến{" "}
+            <span className="font-bold text-blue-400">
+              {moment(project?.endAt, "YYYY-MM-DD").format("DD-MM-YYYY")}
+            </span>
+          </div>
           <div className="organization">
             <img
               src={project?.author?.avatar}

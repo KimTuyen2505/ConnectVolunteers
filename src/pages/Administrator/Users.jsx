@@ -91,56 +91,81 @@ export default function UserManagement() {
         >
           <h3 className="text-lg font-semibold mb-4">Thêm người dùng mới</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <input
-              type="text"
-              placeholder="Tên tài khoản"
-              value={newUser.username}
-              onChange={(e) =>
-                setNewUser({ ...newUser, username: e.target.value })
-              }
-              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
-              required
-            />
-            <input
-              type="password"
-              placeholder="Mật khẩu"
-              value={newUser.password}
-              onChange={(e) =>
-                setNewUser({ ...newUser, password: e.target.value })
-              }
-              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
-              required
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={newUser.email}
-              onChange={(e) =>
-                setNewUser({ ...newUser, email: e.target.value })
-              }
-              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
-              required
-            />
-            <input
-              type="text"
-              placeholder="Tên đầy đủ"
-              value={newUser.fullName}
-              onChange={(e) =>
-                setNewUser({ ...newUser, fullName: e.target.value })
-              }
-              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
-              required
-            />
-            <input
-              type="date"
-              placeholder="Tên đầy đủ"
-              value={newUser.birthDate}
-              onChange={(e) =>
-                setNewUser({ ...newUser, birthDate: e.target.value })
-              }
-              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
-              required
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Tên tài khoản:
+              </label>
+              <input
+                type="text"
+                placeholder="Tên tài khoản"
+                value={newUser.username}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, username: e.target.value })
+                }
+                className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Mật khẩu:
+              </label>
+              <input
+                type="password"
+                placeholder="Mật khẩu"
+                value={newUser.password}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, password: e.target.value })
+                }
+                className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Email:
+              </label>
+              <input
+                type="email"
+                placeholder="Email"
+                value={newUser.email}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, email: e.target.value })
+                }
+                className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Tên đầy đủ:
+              </label>
+              <input
+                type="text"
+                placeholder="Tên đầy đủ"
+                value={newUser.fullName}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, fullName: e.target.value })
+                }
+                className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Ngày sinh:
+              </label>
+              <input
+                type="date"
+                placeholder="Ngày sinh"
+                value={newUser.birthDate}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, birthDate: e.target.value })
+                }
+                className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+                required
+              />
+            </div>
           </div>
           <motion.button
             whileHover={{ scale: 1.02 }}
