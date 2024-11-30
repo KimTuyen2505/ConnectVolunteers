@@ -25,6 +25,9 @@ export default function Header() {
             <Link to="/projects" className="text-gray-700 hover:text-gray-900">
               Dự Án
             </Link>
+            <Link to="/activities" className="text-gray-700 hover:text-gray-900">
+              Hoạt động
+            </Link>
             <Link to="/about" className="text-gray-700 hover:text-gray-900">
               Về Chúng Tôi
             </Link>

@@ -11,6 +11,8 @@ import DetailProject from "./pages/DetailProject";
 import PaymentResult from "./pages/PaymentResult";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/Administrator";
+import Activities from "./pages/Activities";
+import DetailActivity from "./pages/DetailActivity";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path="/profile/:userId" element={<Profile />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/projects/:projectId" element={<DetailProject />} />
+        <Route path="/activities" element={<Activities />} />
+        <Route path="/activities/:activityId" element={<DetailActivity />} />
         <Route path="/about" element={<About />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route

@@ -17,6 +17,7 @@ export default function ProjectManagement() {
     author: currentUser?.username || "",
     images: [],
     supporters: [],
+    supportersCount: 0,
     target: 0,
     description: "",
     tagId: "",
@@ -90,6 +91,7 @@ export default function ProjectManagement() {
                           author: currentUser?.username || "",
                           images: [],
                           supporters: [],
+                          supportersCount: 0,
                           target: 0,
                           description: "",
                           tagId: "",
@@ -213,6 +215,23 @@ export default function ProjectManagement() {
               ))}
             </select>
           </div>
+          {newProject.tagId === "6736cda456f33d273ba32f7c" && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Số lượng tình nguyện viên:
+              </label>
+              <input
+                type="number"
+                onChange={(e) =>
+                  setNewProject({
+                    ...newProject,
+                    supportersCount: Math.floor(Number(e.target.value)),
+                  })
+                }
+                className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+              />
+            </div>
+          )}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Chọn các hình ảnh:

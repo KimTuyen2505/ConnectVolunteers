@@ -119,7 +119,7 @@ export default function Projects() {
             marginBottom: "40px",
           }}
         >
-          Dự án đang gây quỹ
+          Dự án gây quỹ
         </h1>
         <p className="text-gray-600 text-center mb-8">
           Hãy lựa chọn một dự án và ủng hộ ngay hôm nay
@@ -127,17 +127,20 @@ export default function Projects() {
 
         {/* Categories */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {tags.map((tag) => (
-            <button
-              key={tag._id}
-              className={`px-6 py-2 rounded-full ${
-                tag === currentTag ? "bg-blue-500 text-white" : "bg-gray-100"
-              } hover:bg-blue-500 hover:text-white transition-colors`}
-              onClick={() => setCurrentTag(tag)}
-            >
-              {tag.tagName}
-            </button>
-          ))}
+          {tags.map((tag) => {
+            if (tag.tagName === "Tình nguyện") return <div></div>;
+            return (
+              <button
+                key={tag._id}
+                className={`px-6 py-2 rounded-full ${
+                  tag === currentTag ? "bg-blue-500 text-white" : "bg-gray-100"
+                } hover:bg-blue-500 hover:text-white transition-colors`}
+                onClick={() => setCurrentTag(tag)}
+              >
+                {tag.tagName}
+              </button>
+            );
+          })}
         </div>
 
         {/* Projects Grid */}
@@ -184,47 +187,6 @@ export default function Projects() {
                     <p className="text-gray-600 text-sm mt-1">
                       với mục tiêu {moneyString(project.target)}đ
                     </p>
-                  </div>
-                </div>
-              ))
-          ) : currentTag?.tagName === "Tình nguyện" ? (
-            projects
-              .filter((project) => project.tagId === currentTag?._id)
-              .map((project) => (
-                <div
-                  key={project._id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg cursor-pointer hover:scale-105 transform transition-transform"
-                >
-                  <img
-                    src={project.images[0]}
-                    alt={project.title}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-6">
-                    <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm mb-3">
-                      {currentTag.tagName}
-                    </span>
-                    <h3 className="text-xl font-semibold mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4">{project.description}</p>
-                    <div className="mb-4">
-                      <p className="text-gray-600">
-                        <strong>Ngày:</strong>{" "}
-                        {moment(project.startAt, "YYYY-MM-DD").format(
-                          "DD-MM-YYYY"
-                        )}
-                      </p>
-                      <p className="text-gray-600">
-                        <strong>Số lượng tình nguyện viên:</strong> {0}
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => showModal(project)}
-                      className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
-                    >
-                      Đăng ký tham gia
-                    </button>
                   </div>
                 </div>
               ))
