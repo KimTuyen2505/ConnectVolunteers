@@ -7,8 +7,7 @@ function UserMenu({ currentUser }) {
   const logOut = () => {
     localStorage.removeItem("currentUser");
     window.location.href = "/";
-  };
-
+  }; // Log out and redirect to home page
   return (
     <div className="relative inline-block text-left z-40">
       <div

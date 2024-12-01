@@ -34,6 +34,9 @@ export default function Header() {
             <Link to="/ranking" className="text-gray-700 hover:text-gray-900">
               Bảng Xếp Hạng
             </Link>
+            <Link to="/faq" className="text-gray-700 hover:text-gray-900">
+              FAQ
+            </Link>
           </div>
 
           {/* Right Side Actions */}

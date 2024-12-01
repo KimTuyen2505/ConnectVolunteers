@@ -5,19 +5,19 @@ const volunteerItems = [
     letter: 'Về Volunteerwork',
     title: 'Sứ Mệnh của Chúng Tôi',
     description: 'Chúng tôi tin rằng mỗi cá nhân đều có khả năng tạo ra sự thay đổi tích cực trong cộng đồng. Dự án Volunteerwork được thành lập với mục tiêu kết nối những tình nguyện viên đam mê với các tổ chức và dự án cần sự hỗ trợ. Chúng tôi cam kết mang đến cơ hội cho mọi người tham gia và góp phần xây dựng một xã hội tốt đẹp hơn.',
-    image: '/test.jpg',
+    image: '/Volunteer2.jpg',
   },
   {
     letter: 'Giá Trị Cốt Lõi',
     title: 'Tình Nguyện - Đoàn Kết - Phát Triển Bền Vững',
     description: 'Phát Triển Bền Vững: Chúng tôi hướng tới việc phát triển các giải pháp bền vững cho các vấn đề xã hội và môi trường.',
-    image: '/test.jpg',
+    image: '/Volunteer1.jpg',
   },
   {
     letter: 'Tham Gia Cùng Chúng Tôi',
     title: 'Bạn muốn tham gia cùng chúng tôi? ',
     description: 'Chúng tôi luôn chào đón những tình nguyện viên mới! Nếu bạn muốn tham gia, hãy liên hệ với chúng tôi qua trang web hoặc các kênh truyền thông xã hội. Hãy cùng nhau tạo nên sự khác biệt!',
-    image: '/test.jpg',
+    image: '/volunteer0.jpg',
   },
   
 ]

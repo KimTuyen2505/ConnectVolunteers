@@ -21,7 +21,7 @@ export default function AdminDashboard() {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="bg-sky-600 text-white w-64 min-h-screen p-4 left-0"
           >
-            <h1 className="text-2xl font-bold mb-8">Charity Admin</h1>
+            <h1 className="text-2xl font-bold mb-8">Quản Trị VolunteersWork</h1>
             <nav>
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -32,7 +32,7 @@ export default function AdminDashboard() {
                 }`}
               >
                 <FiUsers className="mr-2" />
-                Users
+                Quản Lý Người Dùng
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -43,7 +43,7 @@ export default function AdminDashboard() {
                 }`}
               >
                 <FiFolder className="mr-2" />
-                Projects
+                Quản Lý Dự Án
               </motion.button>
             </nav>
           </motion.aside>

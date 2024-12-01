@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/Administrator";
 import Activities from "./pages/Activities";
 import DetailActivity from "./pages/DetailActivity";
+import FAQPage from "./pages/FAQPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/activities/:activityId" element={<DetailActivity />} />
         <Route path="/about" element={<About />} />
         <Route path="/ranking" element={<Ranking />} />
+        <Route path="/faq" element={<FAQPage />} />
         <Route
           path="/payment-result"
           element={<PaymentResult success={false} />}
