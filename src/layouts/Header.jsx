@@ -37,6 +37,9 @@ export default function Header() {
             <Link to="/faq" className="text-gray-700 hover:text-gray-900">
               FAQ
             </Link>
+            <Link to="/map" className="text-gray-700 hover:text-gray-900">
+              Bản Đồ
+            </Link>
           </div>
 
           {/* Right Side Actions */}
