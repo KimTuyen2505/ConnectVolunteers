@@ -113,17 +113,20 @@ export default function Home() {
 
         {/* Categories */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {tags.map((tag) => (
-            <button
-              key={tag._id}
-              className={`px-6 py-2 rounded-full ${
-                tag === currentTag ? "bg-blue-500 text-white" : "bg-gray-100"
-              } hover:bg-blue-500 hover:text-white transition-colors`}
-              onClick={() => setCurrentTag(tag)}
-            >
-              {tag.tagName}
-            </button>
-          ))}
+          {tags.map((tag) => {
+            if (tag.tagName === "Tình nguyện") return "";
+            return (
+              <button
+                key={tag._id}
+                className={`px-6 py-2 rounded-full ${
+                  tag === currentTag ? "bg-blue-500 text-white" : "bg-gray-100"
+                } hover:bg-blue-500 hover:text-white transition-colors`}
+                onClick={() => setCurrentTag(tag)}
+              >
+                {tag.tagName}
+              </button>
+            );
+          })}
         </div>
 
         {/* Projects Grid */}

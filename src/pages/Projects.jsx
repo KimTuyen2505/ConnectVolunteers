@@ -128,7 +128,7 @@ export default function Projects() {
         {/* Categories */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
           {tags.map((tag) => {
-            if (tag.tagName === "Tình nguyện") return <div></div>;
+            if (tag.tagName === "Tình nguyện") return "";
             return (
               <button
                 key={tag._id}

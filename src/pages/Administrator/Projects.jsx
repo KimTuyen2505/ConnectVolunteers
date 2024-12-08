@@ -1,15 +1,29 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { FiPlus, FiTrash2 } from "react-icons/fi";
-import { addProject, deleteProject, getProjects } from "../../services/project";
+import { AiFillThunderbolt } from "react-icons/ai";
+import { MdGroups } from "react-icons/md";
+import {
+  addProject,
+  deleteProject,
+  getProjects,
+  updateProject,
+} from "../../services/project";
 import { getTags } from "../../services/tag";
 import { moneyString } from "../../utils/moneyString";
 import axios from "axios";
+import { getProvinces } from "../../services/province";
+import { Modal, Button, Table } from "antd";
+import { Link } from "react-router-dom";
 
 export default function ProjectManagement() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
 
   const [projects, setProjects] = useState([]);
+  const [provinces, setProvinces] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
   const [tags, setTags] = useState([]);
   const [disable, setDisable] = useState(false);
   const [newProject, setNewProject] = useState({
@@ -20,6 +34,7 @@ export default function ProjectManagement() {
     supportersCount: 0,
     target: 0,
     description: "",
+    location: "",
     tagId: "",
     startAt: "",
     endAt: "",
@@ -29,12 +44,16 @@ export default function ProjectManagement() {
   useEffect(() => {
     fetchProjects();
     fetchTags();
+    fetchProvinces();
   }, []);
 
   const fetchProjects = async () => {
     try {
       getProjects().then((response) => {
         setProjects(response.reverse());
+        if (selectedActivity) {
+          setVolunteers(selectedActivity.registers);
+        }
       });
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -49,6 +68,46 @@ export default function ProjectManagement() {
     } catch (error) {
       console.error("Error fetching tags:", error);
     }
+  };
+
+  const fetchProvinces = async () => {
+    try {
+      getProvinces().then((response) => {
+        setProvinces(response);
+      });
+    } catch (error) {
+      console.error("Error fetching provinces:", error);
+    }
+  };
+
+  const fetchDistricts = async (code) => {
+    setDistricts(
+      provinces.filter((province) => province.code === Number(code))[0]
+        .districts
+    );
+  };
+
+  const getProvinceName = async (code) => {
+    const province = await Promise.all(
+      provinces.map((province) => {
+        if (province.code === Number(code)) {
+          return province.name;
+        }
+      })
+    );
+    return province.filter((a) => a !== undefined)[0];
+  };
+  const getDistrictName = async (code) => {
+    const district = await Promise.all(
+      provinces.map((province) => {
+        if (province.code === Number(selectedProvince)) {
+          return province.districts.find(
+            (district) => district.code === Number(code)
+          ).name;
+        }
+      })
+    );
+    return district.filter((a) => a !== undefined)[0];
   };
 
   const handleAddProject = async (e) => {
@@ -94,6 +153,7 @@ export default function ProjectManagement() {
                           supportersCount: 0,
                           target: 0,
                           description: "",
+                          location: "",
                           tagId: "",
                           startAt: "",
                           endAt: "",
@@ -111,6 +171,26 @@ export default function ProjectManagement() {
             reader.readAsDataURL(file);
           })
         );
+      } else {
+        addProject({ ...newProject, images: [] }).then((response) => {
+          if (response.success) {
+            setNewProject({
+              title: "",
+              author: currentUser?.username || "",
+              images: [],
+              supporters: [],
+              supportersCount: 0,
+              target: 0,
+              description: "",
+              location: "",
+              tagId: "",
+              startAt: "",
+              endAt: "",
+            });
+            setDisable(false);
+            fetchProjects();
+          }
+        });
       }
     } catch (error) {
       console.error("Error adding project:", error);
@@ -129,10 +209,83 @@ export default function ProjectManagement() {
     }
   };
 
+  const handleUpdateProject = async (project) => {
+    try {
+      updateProject(project).then((response) => {
+        if (response.success) {
+          fetchProjects();
+        }
+      });
+    } catch (error) {
+      console.error("Error deleting project:", error);
+    }
+  };
+
   const handleImageChange = async (e) => {
     const files = e.target.files;
     setSelectedFile([...e.target.files]);
     console.log(files);
+  };
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedActivity, setSelectedActivity] = useState(null);
+
+  const showModal = (activity) => {
+    setSelectedActivity(activity);
+    setVolunteers(activity.registers);
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const columns = [
+    {
+      title: "Tên tài khoản",
+      dataIndex: "username",
+      key: "username",
+      render: (text) => {
+        return <Link to={`/profile/${text}`}>{text}</Link>;
+      },
+    },
+    {
+      title: "Lý do tham gia",
+      dataIndex: "reason",
+      key: "reason",
+    },
+    {
+      title: "Hành động",
+      key: "action",
+      render: (text, record, index) => {
+        return (
+          <div>
+            <Button type="primary" danger onClick={() => deleteRegister(index)}>
+              Xóa
+            </Button>
+          </div>
+        );
+      },
+    },
+  ];
+
+  const [volunteers, setVolunteers] = useState([]);
+  const deleteRegister = async (index) => {
+    updateProject({
+      ...selectedActivity,
+      registers: selectedActivity.registers.filter((_, id) => id !== index),
+    }).then((response) => {
+      if (response.success) {
+        console.log(volunteers, index);
+        selectedActivity.registers.splice(index, 1);
+        console.log("Delete success");
+        fetchProjects();
+      }
+    });
   };
 
   return (
@@ -215,23 +368,6 @@ export default function ProjectManagement() {
               ))}
             </select>
           </div>
-          {newProject.tagId === "6736cda456f33d273ba32f7c" && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Số lượng tình nguyện viên:
-              </label>
-              <input
-                type="number"
-                onChange={(e) =>
-                  setNewProject({
-                    ...newProject,
-                    supportersCount: Math.floor(Number(e.target.value)),
-                  })
-                }
-                className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
-              />
-            </div>
-          )}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Chọn các hình ảnh:
@@ -242,6 +378,7 @@ export default function ProjectManagement() {
               onChange={handleImageChange}
               className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
               accept="image/*"
+              required
             />
           </div>
           <div>
@@ -274,7 +411,80 @@ export default function ProjectManagement() {
               required
             />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Chọn tỉnh/thành phố:
+            </label>
+            <select
+              value={selectedProvince}
+              onChange={async (e) => {
+                setSelectedProvince(e.target.value);
+                setSelectedDistrict("");
+                console.log(e.target.value);
+                setNewProject({
+                  ...newProject,
+                  location: await getProvinceName(e.target.value),
+                });
+                fetchDistricts(e.target.value);
+              }}
+              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+              required
+            >
+              <option value="">---Chọn tỉnh/thành phố---</option>
+              {provinces.map((province) => (
+                <option key={province.code} value={province.code}>
+                  {province.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Chọn quận/huyện:
+            </label>
+            <select
+              value={selectedDistrict}
+              onChange={async (e) => {
+                setSelectedDistrict(e.target.value);
+                setNewProject({
+                  ...newProject,
+                  location: `${await getDistrictName(e.target.value)}, ${
+                    newProject.location
+                  }`,
+                });
+              }}
+              className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+              required
+              disabled={!selectedProvince}
+            >
+              <option value="">---Chọn quận/huyện---</option>
+              {districts.map((district) => (
+                <option key={district.code} value={district.code}>
+                  {district.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          {newProject.tagId === "6736cda456f33d273ba32f7c" && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Số lượng tình nguyện viên:
+              </label>
+              <input
+                type="number"
+                onChange={(e) =>
+                  setNewProject({
+                    ...newProject,
+                    supportersCount: Math.floor(Number(e.target.value)),
+                  })
+                }
+                className="w-full p-2 border border-sky-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500"
+                required
+              />
+            </div>
+          )}
         </div>
+
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -319,6 +529,37 @@ export default function ProjectManagement() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() =>
+                      handleUpdateProject({
+                        ...project,
+                        status:
+                          project.status === "finished"
+                            ? "inProgress"
+                            : "finished",
+                      })
+                    }
+                    className={`${
+                      project.status === "finished"
+                        ? "text-green-600 hover:text-green-900"
+                        : "text-blue-600 hover:text-blue-900"
+                    } transition-colors flex items-center`}
+                  >
+                    <AiFillThunderbolt className="mr-1" />{" "}
+                    {project.status === "finished" ? "Tiếp tục" : "Kết thúc"}
+                  </motion.button>
+                  {project.tagId === "6736cda456f33d273ba32f7c" && (
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => showModal(project)}
+                      className="text-blue-600 hover:text-blue-900 transition-colors flex items-center"
+                    >
+                      <MdGroups className="mr-1" /> Xem tình nguyện viên
+                    </motion.button>
+                  )}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => handleDeleteProject(project._id)}
                     className="text-red-600 hover:text-red-900 transition-colors flex items-center"
                   >
@@ -330,6 +571,25 @@ export default function ProjectManagement() {
           </tbody>
         </table>
       </div>
+      <Modal
+        title="Danh sách tình nguyện viên"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        width={800}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Đóng
+          </Button>,
+        ]}
+      >
+        <Table
+          dataSource={volunteers}
+          columns={columns}
+          rowKey="id"
+          pagination={{ pageSize: 5 }}
+        />
+      </Modal>
     </motion.div>
   );
 }
