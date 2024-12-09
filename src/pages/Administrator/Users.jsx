@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { FiPlus, FiTrash2 } from "react-icons/fi";
-import { addUser, deleteUser, getUsers } from "../../services/user";
+import { addUser, checkExistUser, deleteUser, getUsers } from "../../services/user";
 import { useEffect, useState } from "react";
 import Notification from "../../components/Notification";
 
@@ -37,7 +37,51 @@ export default function UserManagement() {
 
   const handleAddUser = async (e) => {
     e.preventDefault();
-    try {
+    const usernameRegex = /^[a-zA-Z0-9_]+$/;
+    if (!usernameRegex.test(newUser.username)) {
+      showNotification("Tên tài khoản không được chứa ký tự đặc biệt", "error");
+      return;
+    }
+
+    const today = new Date();
+    const birthDate = new Date(newUser.birthDate);
+    if (birthDate > today) {
+      showNotification(
+        "Ngày sinh không hợp lệ! Vui lòng kiểm tra lại",
+        "error"
+      );
+      return;
+    } else if (today.getFullYear() - birthDate.getFullYear() < 18) {
+      showNotification("Bạn chưa đủ 18 tuổi để đăng ký tài khoản", "error");
+      return;
+    }
+
+    // Check if the email already exists
+    const emailInUse = await checkExistUser(newUser.email);
+    if (emailInUse.success) {
+      showNotification(
+        "Email đã tồn tại! Vui lòng sử dụng email khác.",
+        "error"
+      );
+      return;
+    }
+
+    // Validate passwords
+    if (newUser.password.length < 6) {
+      showNotification("Mật khẩu phải có ít nhất 6 ký tự", "error");
+      return;
+    } else if (
+      !/[A-Z]/.test(newUser.password) ||
+      !/[a-z]/.test(newUser.password) ||
+      !/[0-9]/.test(newUser.password) ||
+      !/[!@#$%^&*(),.?":{}|<>]/.test(newUser.password)
+    ) {
+      showNotification(
+        "Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường, 1 chữ số và 1 ký tự đặc biệt",
+        "error"
+      );
+      return;
+    } else {
       addUser(newUser).then((response) => {
         if (response.success) {
           setNewUser({
@@ -51,8 +95,6 @@ export default function UserManagement() {
           fetchUsers();
         }
       });
-    } catch (error) {
-      console.error("Error adding user:", error);
     }
   };
 

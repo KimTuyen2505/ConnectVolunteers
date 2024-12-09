@@ -387,7 +387,7 @@ export default function ProjectManagement() {
             </label>
             <input
               type="date"
-              placeholder="Ngày bắt đầu"
+              data-date-format="dd/MM/yyyy"
               value={newProject.startAt}
               onChange={(e) =>
                 setNewProject({ ...newProject, startAt: e.target.value })
