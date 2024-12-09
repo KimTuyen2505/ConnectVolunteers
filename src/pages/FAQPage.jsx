@@ -127,7 +127,7 @@ const FAQPage = () => {
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="text-xl font-semibold mb-4">TÍNH NĂNG SỬ GIÁ GÂY QUỸ</h3>
               <p className="text-gray-600 mb-4">
-                Tính năng Sử giá gây quỹ cho phép người dùng được xác thực trên Volunteerwork.vn tham gia vào việc truyền thông, vận động gây quỹ cho các Tổ chức...
+                Tính năng Sứ giả gây quỹ cho phép người dùng được xác thực trên hệ thống tham gia vào việc truyền thông, vận động gây quỹ cho các Tổ chức...
               </p>
               <button className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-700">
                 XEM CHI TIẾT
@@ -136,7 +136,7 @@ const FAQPage = () => {
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="text-xl font-semibold mb-4">TÍNH NĂNG ỦNG HỘ</h3>
               <p className="text-gray-600 mb-4">
-                Bạn có thể ủng hộ các dự án qua 03 bước đơn giản bằng các tài khoản thanh toán điện tử như Internet Banking, Ví điện tử...
+                Bạn có thể ủng hộ các dự án qua 03 bước đơn giản bằng các tài khoản thanh toán điện tử như Internet Banking, Ví điện tử, Thẻ thanh toán quốc tế, ...
               </p>
               <button className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-700">
                 XEM CHI TIẾT

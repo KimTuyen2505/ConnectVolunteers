@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { FaMedal } from "react-icons/fa";
-import { getUsers } from "../services/user";
-import { getProjects } from "../services/project";
-import { moneyString } from "../utils/moneyString";
+import { getUsers } from "../../services/user";
+import { getProjects } from "../../services/project";
+import { moneyString } from "../../utils/moneyString";
+import { Link } from "react-router-dom";
 
-export default function Ranking() {
+export default function AmountRanking() {
   const [users, setUsers] = React.useState([]);
 
   useEffect(() => {
@@ -26,6 +27,7 @@ export default function Ranking() {
               })
             );
             userData.push({
+              username: user.username,
               fullName: user.fullName,
               amountTotal: amountTotal,
               avatar: user.avatar,
@@ -87,12 +89,13 @@ export default function Ranking() {
                 </div>
 
                 <div>
-                  <h2
+                  <Link
+                    to={`/profile/${user.username}`}
                     className="text-xl font-semibold text-gray-800 animate-fade-in"
                     style={{ animationDelay: `${index * 0.1 + 0.3}s` }}
                   >
                     {user.fullName}
-                  </h2>
+                  </Link>
                   <p
                     className="text-gray-600 animate-fade-in"
                     style={{ animationDelay: `${index * 0.1 + 0.4}s` }}

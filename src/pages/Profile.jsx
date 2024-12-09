@@ -18,6 +18,8 @@ import Notification from "../components/Notification";
 import axios from "axios";
 
 const Profile = () => {
+  const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
+
   const { userId } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const defaultUser = {
@@ -45,7 +47,7 @@ const Profile = () => {
       setUserData(user);
       setUserDataEditing(user);
     });
-  }, []);
+  }, [userId]);
 
   const fileInputRef = useRef(null);
 
@@ -131,18 +133,20 @@ const Profile = () => {
                   Chi tiết và cài đặt tài khoản.
                 </p>
               </div>
-              <Button
-                onClick={() => {
-                  if (isEditing) {
-                    setUserDataEditing(userData);
-                  }
-                  setIsEditing(!isEditing);
-                }}
-                className="flex justify-center items-center"
-              >
-                <Edit2 className="h-4 w-4 mr-2" />
-                {isEditing ? "Hủy" : "Chỉnh sửa"}
-              </Button>
+              {currentUser && currentUser.username === userId && (
+                <Button
+                  onClick={() => {
+                    if (isEditing) {
+                      setUserDataEditing(userData);
+                    }
+                    setIsEditing(!isEditing);
+                  }}
+                  className="flex justify-center items-center"
+                >
+                  <Edit2 className="h-4 w-4 mr-2" />
+                  {isEditing ? "Hủy" : "Chỉnh sửa"}
+                </Button>
+              )}
             </div>
             <div className="border-t border-gray-200">
               <form onSubmit={handleSubmit}>

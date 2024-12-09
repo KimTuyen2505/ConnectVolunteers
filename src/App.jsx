@@ -6,7 +6,6 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Projects from "./pages/Projects";
 import About from "./pages/About";
-import Ranking from "./pages/Ranking";
 import DetailProject from "./pages/DetailProject";
 import PaymentResult from "./pages/PaymentResult";
 import NotFound from "./pages/NotFound";
@@ -14,6 +13,7 @@ import AdminDashboard from "./pages/Administrator";
 import Activities from "./pages/Activities";
 import DetailActivity from "./pages/DetailActivity";
 import FAQPage from "./pages/FAQPage";
+import Ranking from "./pages/Ranking";
 
 function App() {
   return (

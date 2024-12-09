@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, Button, Modal, Form, Input, message } from "antd";
 import { getProject, updateProject } from "../services/project";
+import moment from "moment";
 
 const DetailActivity = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
@@ -85,7 +86,7 @@ const DetailActivity = () => {
                 <strong>Địa điểm:</strong> {activity.location}
               </p>
               <p>
-                <strong>Từ ngày:</strong> {activity.startAt} - {activity.endAt}
+                <strong>Từ ngày:</strong> {moment(activity.startAt, "YYYY-MM-DD").format("DD/MM/YYYY")} - {moment(activity.endAt, "YYYY-MM-DD").format("DD/MM/YYYY")}
               </p>
               <p>
                 <strong>Số lượng tình nguyện viên cần:</strong>{" "}
